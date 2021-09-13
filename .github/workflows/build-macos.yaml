@@ -8,10 +8,11 @@ on:
 
 env:
   BUILD_TYPE: Release
+  DEVELOPER_DIR: /Applications/Xcode_12.5.app/Contents/Developer
 
 jobs:
   build-macosx:
-    runs-on: macos-11
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2
