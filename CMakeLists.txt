@@ -17,13 +17,21 @@ configure_file("resources/version.h.in" "version.h")
 include_directories(${CMAKE_BINARY_DIR})
 
 include(${PROJECT_SOURCE_DIR}/thirdparty/conan.cmake)
-conan_cmake_run(
-  CONANFILE thirdparty/dependencies.txt
-  BASIC_SETUP
-  CMAKE_TARGETS # individual targets to link to
-  BUILD
-    missing
-)
+if(APPLE)
+  conan_cmake_run(
+    CONANFILE thirdparty/dependencies.txt
+    BASIC_SETUP
+    CMAKE_TARGETS # individual targets to link to
+    BUILD outdated
+  )
+else()
+  conan_cmake_run(
+    CONANFILE thirdparty/dependencies.txt
+    BASIC_SETUP
+    CMAKE_TARGETS # individual targets to link to
+    BUILD missing
+  )
+endif()
 
 add_subdirectory(src)
 
