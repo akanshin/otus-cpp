@@ -14,6 +14,6 @@ project(otuscpp
 configure_file("resources/version.h.in" "version.h")
 include_directories(${CMAKE_BINARY_DIR})
 
-#TODO: setup third-party dependencies.
+include(dependencies/dependencies.cmake)
 
 add_subdirectory(src)
