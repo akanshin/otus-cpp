@@ -21,8 +21,8 @@ conan_cmake_run(
   CONANFILE thirdparty/dependencies.txt
   BASIC_SETUP
   CMAKE_TARGETS # individual targets to link to
-  BUILD_TYPE ${CMAKE_BUILD_TYPE}
-  BUILD missing
+  BUILD
+    missing
 )
 
 add_subdirectory(src)
