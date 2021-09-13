@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.19)
 
+set(CMAKE_CXX_STANDARD 17)
+
 if(DEFINED ENV${GITHUB_RUN_NUMBER})
   set(PATCH_NUM $ENV(GITHUB_RUN_NUMBER))
 else()
