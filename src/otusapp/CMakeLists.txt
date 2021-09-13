@@ -5,7 +5,7 @@ include_directories(
 )
 
 set(OTUS_APP_HEADERS
-  "otusapp_precompiled.h"
+  "precompiled.h"
 )
 
 set(OTUS_APP_SOURCES
@@ -14,6 +14,8 @@ set(OTUS_APP_SOURCES
 
 add_executable(otusapp ${OTUS_APP_HEADERS} ${OTUS_APP_SOURCES})
 
-target_precompile_headers(otusapp PRIVATE "otusapp_precompiled.h")
+target_precompile_headers(otusapp PRIVATE "precompiled.h")
 
 target_link_libraries(otusapp otuslib)
+
+install(TARGETS otusapp RUNTIME DESTINATION bin)

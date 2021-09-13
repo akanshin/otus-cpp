@@ -1,4 +1,4 @@
-#include "otus_precompiled.h"
+#include "precompiled.h"
 #include "otus_greeting.h"
 
 namespace otus

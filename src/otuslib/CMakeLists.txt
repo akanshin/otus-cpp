@@ -9,7 +9,7 @@ include_directories(
 set(OTUS_LIB_HEADERS
   "otus_exports.h"
   "otus_greeting.h"
-  "otus_precompiled.h"
+  "precompiled.h"
 )
 
 set(OTUS_LIB_SOURCES
@@ -18,10 +18,12 @@ set(OTUS_LIB_SOURCES
 
 add_library(otuslib SHARED ${OTUS_LIB_HEADERS} ${OTUS_LIB_SOURCES})
 
-target_precompile_headers(otuslib PRIVATE "otus_precompiled.h")
+target_precompile_headers(otuslib PRIVATE "precompiled.h")
 
 if(UNIX)
   if(NOT APPLE)
     target_link_libraries(otuslib PRIVATE pthread rt)
   endif(NOT APPLE)
 endif(UNIX)
+
+install(TARGETS otuslib RUNTIME DESTINATION bin)

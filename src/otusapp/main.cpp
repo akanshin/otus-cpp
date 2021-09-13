@@ -1,4 +1,4 @@
-#include "otusapp_precompiled.h"
+#include "precompiled.h"
 
 int main(int argc, char** argv)
 {
