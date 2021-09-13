@@ -11,7 +11,7 @@ env:
 
 jobs:
   build-macosx:
-    runs-on: macos-10.15
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2
