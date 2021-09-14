@@ -22,7 +22,6 @@ conan_cmake_run(
   BASIC_SETUP
   CMAKE_TARGETS
   BUILD missing
-  SETTINGS compiler.version=${CMAKE_CXX_COMPILER_VERSION}
 )
 
 add_subdirectory(src)
