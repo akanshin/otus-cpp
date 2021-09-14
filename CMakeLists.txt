@@ -22,8 +22,6 @@ conan_cmake_run(
   BASIC_SETUP
   CMAKE_TARGETS
   BUILD missing
-  SETTINGS arch=x86_64
-  SETTINGS compiler=${CMAKE_CXX_COMPILER}
   SETTINGS compiler.libcxx=libstdc++${CMAKE_CXX_STANDARD}
   SETTINGS compiler.cppstd=${CMAKE_CXX_STANDARD}
   SETTINGS compiler.version=${CMAKE_CXX_COMPILER_VERSION}
