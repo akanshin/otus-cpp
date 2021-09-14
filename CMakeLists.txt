@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.19)
 set(CMAKE_CXX_STANDARD 17)
 
 if(DEFINED ENV${GITHUB_RUN_NUMBER})
-  set(PATCH_NUM $ENV(GITHUB_RUN_NUMBER))
+  set(PATCH_NUM $ENV{GITHUB_RUN_NUMBER})
 else()
   set(PATCH_NUM 0)
 endif()
@@ -17,21 +17,16 @@ configure_file("resources/version.h.in" "version.h")
 include_directories(${CMAKE_BINARY_DIR})
 
 include(${PROJECT_SOURCE_DIR}/thirdparty/conan.cmake)
-if(APPLE)
-  conan_cmake_run(
-    CONANFILE thirdparty/dependencies.txt
-    BASIC_SETUP
-    CMAKE_TARGETS # individual targets to link to
-    BUILD outdated
-  )
-else()
-  conan_cmake_run(
-    CONANFILE thirdparty/dependencies.txt
-    BASIC_SETUP
-    CMAKE_TARGETS # individual targets to link to
-    BUILD missing
-  )
-endif()
+conan_cmake_run(
+  CONANFILE thirdparty/dependencies.txt
+  BASIC_SETUP
+  CMAKE_TARGETS
+  BUILD missing
+  SETTINGS arch=x86_64
+  SETTINGS compiler=${CMAKE_CXX_COMPILER}
+  SETTINGS compiler.cppstd=${CMAKE_CXX_STANDARD}
+  SETTINGS compiler.version=${CMAKE_CXX_COMPILER_VERSION}
+)
 
 add_subdirectory(src)
 
