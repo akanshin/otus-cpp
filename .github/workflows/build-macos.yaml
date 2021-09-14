@@ -25,5 +25,5 @@ jobs:
       - name: Build
         run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
 
-      - name: Run tests
-        run: ctest --test-dir ${{github.workspace}}/cmake-build-release --output-on-failure
+      #- name: Run tests
+      #  run: ctest --test-dir ${{github.workspace}}/cmake-build-release --output-on-failure
