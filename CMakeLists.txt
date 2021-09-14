@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.19)
 
+set(CMAKE_CXX_STANDARD 17)
+
 if(DEFINED ENV${GITHUB_RUN_NUMBER})
-  set(PATCH_NUM $ENV(GITHUB_RUN_NUMBER))
+  set(PATCH_NUM $ENV{GITHUB_RUN_NUMBER})
 else()
   set(PATCH_NUM 0)
 endif()
@@ -18,8 +20,7 @@ include(${PROJECT_SOURCE_DIR}/thirdparty/conan.cmake)
 conan_cmake_run(
   CONANFILE thirdparty/dependencies.txt
   BASIC_SETUP
-  CMAKE_TARGETS # individual targets to link to
-  BUILD_TYPE ${CMAKE_BUILD_TYPE}
+  CMAKE_TARGETS
   BUILD missing
 )
 

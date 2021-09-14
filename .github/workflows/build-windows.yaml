@@ -1,0 +1,29 @@
+name: Build Windows
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install conan
+      run: pip3 install conan
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
+
+    - name: Run tests
+      run: ctest --test-dir ${{github.workspace}}/cmake-build-release
