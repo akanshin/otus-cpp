@@ -7,6 +7,9 @@ on:
 
 env:
   BUILD_TYPE: Release
+  VERSION_MAJOR: 0
+  VERSION_MINOR: 0
+  VERSION_PATCH: ${{github.run_number}}
 
 jobs:
   build-linux:
@@ -19,7 +22,7 @@ jobs:
       run: pip3 install conan
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_ID=${{github.run_number}}
+      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}"
 
     - name: Build
       run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
@@ -33,9 +36,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
-        tag_name: ${{github.run_number}}
-        release_name: Release ${{github.run_number}}
-        draft: false
+        tag_name: v${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}
+        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}Linux
+        draft: true
         prerelease: false
 
     - name: Upload Release Asset DEB
@@ -45,8 +48,8 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-Linux.deb
-        asset_name: otuscpp-0.0.${{ github.run_number }}-Linux.deb
+        asset_path: ./otuscpp-0.0.${{github.run_number}}-Linux.deb
+        asset_name: otuscpp-0.0.${{ github.run_number }}-alpha-Linux.deb
         asset_content_type: application/vnd.debian.binary-package
 
     - name: Upload Release Asset TAR.GZ
@@ -56,8 +59,8 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-Linux.tar.gz
-        asset_name: otuscpp-0.0.${{ github.run_number }}-Linux.tar.gz
+        asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Linux.tar.gz
+        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-alpha-Linux.tar.gz
         asset_content_type: application/tar.gz
 
   build-macosx:
@@ -70,7 +73,7 @@ jobs:
       run: pip3 install conan
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_ID=${{github.run_number}}
+      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}"
 
     - name: Build
       run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
@@ -78,15 +81,18 @@ jobs:
     - name: Pack
       run: cpack --config ${{github.workspace}}/cmake-build-release/CPackConfig.cmake
 
+    - name: Check dir
+      run: ls -a ${{github.workspace}}
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
-        tag_name: ${{github.run_number}}
-        release_name: Release ${{github.run_number}}
-        draft: false
+        tag_name: v${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}
+        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}} Darwin
+        draft: true
         prerelease: false
 
     - name: Upload Release Asset ZIP
@@ -96,8 +102,8 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-MacOS.zip
-        asset_name: otuscpp-0.0.${{ github.run_number }}-MacOS.zip
+        asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Darwin.zip
+        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-alpha-Darwin.zip
         asset_content_type: application/zip
 
   build-windows:
@@ -110,7 +116,7 @@ jobs:
       run: pip3 install conan
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_ID=${{github.run_number}}
+      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}"
 
     - name: Build
       run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
@@ -124,9 +130,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
-        tag_name: ${{github.run_number}}
-        release_name: Release ${{github.run_number}}
-        draft: false
+        tag_name: v${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}
+        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}} Windows
+        draft: true
         prerelease: false
 
     - name: Upload Release Asset ZIP
@@ -136,6 +142,6 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-win64.zip
-        asset_name: otuscpp-0.0.${{ github.run_number }}-win64.zip
+        asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-win64.zip
+        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-alpha-win64.zip
         asset_content_type: application/zip
