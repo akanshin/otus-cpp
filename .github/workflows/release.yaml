@@ -8,6 +8,16 @@ on:
 env:
   BUILD_TYPE: Release
 
+variables:
+- name: version_major
+  value: 0
+- name: version_minor
+  value: 0
+- name: version_patch
+  value: ${{github.run_number}}
+- name: version_full
+  value: ${{variables.version_major}}.${{variables.version_minor}}.${{variables.version_patch}}
+
 jobs:
   build-linux:
     runs-on: ubuntu-latest
@@ -19,7 +29,7 @@ jobs:
       run: pip3 install conan
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_ID=${{github.run_number}}
+      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION=${{variables.version_full}}
 
     - name: Build
       run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
@@ -56,8 +66,8 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ./otuscpp-0.0.${{github.run_number}}-Linux.tar.gz
-        asset_name: otuscpp-0.0.${{ github.run_number }}-alpha-Linux.tar.gz
+        asset_path: ./otuscpp-${{variables.version_full}}-Linux.tar.gz
+        asset_name: otuscpp-${{variables.version_full}}-alpha-Linux.tar.gz
         asset_content_type: application/tar.gz
 
   build-macosx:
@@ -70,7 +80,7 @@ jobs:
       run: pip3 install conan
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_ID=${{github.run_number}}
+      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION=${{variables.version_full}}
 
     - name: Build
       run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
@@ -96,8 +106,8 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ./otuscpp-0.0.${{github.run_number}}-MacOS.zip
-        asset_name: otuscpp-0.0.${{ github.run_number }}-alpha-MacOS.zip
+        asset_path: ./otuscpp-${{variables.version_full}}-MacOS.zip
+        asset_name: otuscpp-${{variables.version_full}}-alpha-MacOS.zip
         asset_content_type: application/zip
 
   build-windows:
@@ -110,7 +120,7 @@ jobs:
       run: pip3 install conan
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_ID=${{github.run_number}}
+      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION=${{variables.version_full}}
 
     - name: Build
       run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
@@ -124,8 +134,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
-        tag_name: ${{github.run_number}}
-        release_name: Release ${{github.run_number}}
+        tag_name: 0.0.${{github.run_number}}
+        release_name: Release 0.0.${{github.run_number}}
         draft: false
         prerelease: false
 
@@ -136,6 +146,6 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ./otuscpp-0.0.${{github.run_number}}-win64.zip
-        asset_name: otuscpp-0.0.${{ github.run_number }}-alpha-win64.zip
+        asset_path: ./otuscpp-${{variables.version_full}}-win64.zip
+        asset_name: otuscpp-${{variables.version_full}}-alpha-win64.zip
         asset_content_type: application/zip
