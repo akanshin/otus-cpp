@@ -2,13 +2,11 @@ cmake_minimum_required(VERSION 3.19)
 
 set(CMAKE_CXX_STANDARD 17)
 
-if(DEFINED OTUSCPP_BUILD_ID)
-  set(PATCH_NUM ${OTUSCPP_BUILD_ID})
+if(DEFINED ENV${GITHUB_RUN_NUMBER})
+  set(PATCH_NUM $ENV{GITHUB_RUN_NUMBER})
 else()
   set(PATCH_NUM 0)
 endif()
-
-message(STATUS "PATCH_NUM=${PATCH_NUM}")
 
 project(otuscpp
   LANGUAGES CXX
@@ -17,6 +15,12 @@ project(otuscpp
 
 configure_file("resources/version.h.in" "version.h")
 include_directories(${CMAKE_BINARY_DIR})
+
+if(DEFINED OTUSCPP_BUILD_ID)
+  add_definitions(-DOTUSCPP_BUILD_ID=${OTUSCPP_BUILD_ID})
+else()
+  add_definitions(-DOTUSCPP_BUILD_ID="local")
+endif()
 
 include(${PROJECT_SOURCE_DIR}/thirdparty/conan.cmake)
 conan_cmake_run(
