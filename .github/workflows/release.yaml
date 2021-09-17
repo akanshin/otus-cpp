@@ -8,7 +8,7 @@ on:
 env:
   BUILD_TYPE: Release
   VERSION_MAJOR: 0
-  VERSION_MINOR: 0
+  VERSION_MINOR: 1
   VERSION_PATCH: ${{github.run_number}}
 
 jobs:
@@ -30,38 +30,17 @@ jobs:
     - name: Pack
       run: cpack --config ${{github.workspace}}/cmake-build-release/CPackConfig.cmake
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Upload Artifact DEB
+      uses: actions/upload-artifact@v2
       with:
-        tag_name: v${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}
-        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}Linux
-        draft: true
-        prerelease: false
+        name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Linux.deb
+        path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Linux.deb
 
-    - name: Upload Release Asset DEB
-      id: upload-release-asset-deb
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Upload Artifact TAR.GZ
+      uses: actions/upload-artifact@v2
       with:
-        upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ./otuscpp-0.0.${{github.run_number}}-Linux.deb
-        asset_name: otuscpp-0.0.${{ github.run_number }}-alpha-Linux.deb
-        asset_content_type: application/vnd.debian.binary-package
-
-    - name: Upload Release Asset TAR.GZ
-      id: upload-release-asset-tar-gz
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      with:
-        upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Linux.tar.gz
-        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-alpha-Linux.tar.gz
-        asset_content_type: application/tar.gz
+        name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Linux.tar.gz
+        path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Linux.tar.gz
 
   build-macosx:
     runs-on: macos-latest
@@ -81,30 +60,11 @@ jobs:
     - name: Pack
       run: cpack --config ${{github.workspace}}/cmake-build-release/CPackConfig.cmake
 
-    - name: Check dir
-      run: ls -a ${{github.workspace}}
-
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Upload Artifact ZIP
+      uses: actions/upload-artifact@v2
       with:
-        tag_name: v${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}
-        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}} Darwin
-        draft: true
-        prerelease: false
-
-    - name: Upload Release Asset ZIP
-      id: upload-release-asset-zip
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      with:
-        upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Darwin.zip
-        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-alpha-Darwin.zip
-        asset_content_type: application/zip
+        name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Darwin.zip
+        path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Darwin.zip
 
   build-windows:
     runs-on: windows-latest
@@ -124,6 +84,16 @@ jobs:
     - name: Pack
       run: cpack --config ${{github.workspace}}/cmake-build-release/CPackConfig.cmake
 
+    - name: Upload Artifact ZIP
+      uses: actions/upload-artifact@v2
+      with:
+        name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-win64.zip
+        path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-win64.zip
+
+  create-release:
+    runs-on: ubuntu-latest
+    needs: [build-linux, build-macosx, build-windows]
+    steps:
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -131,17 +101,21 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         tag_name: v${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}
-        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}} Windows
+        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}
         draft: true
         prerelease: false
 
-    - name: Upload Release Asset ZIP
-      id: upload-release-asset-zip
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
       with:
-        upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-win64.zip
-        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-alpha-win64.zip
-        asset_content_type: application/zip
+        path: downloaded_artifacts
+
+    - name: Upload artifacts
+      id: upload-release-assets
+      uses: dwenegar/upload-release-assets@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
+        assets_path: downloaded_artifacts
+
