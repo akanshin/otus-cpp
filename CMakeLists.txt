@@ -35,18 +35,13 @@ option(BUILD_TESTS "Build tests" OFF)
 
 if(UNIX)
   if (APPLE)
-    set(CPACK_GENERATOR "DMG")
-    install(CODE "include(BundleUtilities)
-      fixup_bundle(\"${CMAKE_INSTALL_PREFIX}/${APP_NAME}.app\" \"\" \"${CMAKE_BINARY_DIR}\")")
-    set(CPACK_GENERATOR "DragNDrop")
+    set(CPACK_GENERATOR "ZIP")
   else() #linux
     set(CPACK_GENERATOR "DEB;TGZ")
   endif()
 elseif(MSVC)
-  set(CPACK_GENERATOR "WIX")
+set(CPACK_GENERATOR "ZIP")
 endif()
-
-set(CPACK_GENERATOR "${CPACK_GENERATOR};ZIP")
 
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
