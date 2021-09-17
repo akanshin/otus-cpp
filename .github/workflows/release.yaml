@@ -45,7 +45,7 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-Linux.deb
+        asset_path: ./otuscpp-0.0.${{github.run_number}}-Linux.deb
         asset_name: otuscpp-0.0.${{ github.run_number }}-alpha-Linux.deb
         asset_content_type: application/vnd.debian.binary-package
 
@@ -56,7 +56,7 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-Linux.tar.gz
+        asset_path: ./otuscpp-0.0.${{github.run_number}}-Linux.tar.gz
         asset_name: otuscpp-0.0.${{ github.run_number }}-alpha-Linux.tar.gz
         asset_content_type: application/tar.gz
 
@@ -96,7 +96,7 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-MacOS.zip
+        asset_path: ./otuscpp-0.0.${{github.run_number}}-MacOS.zip
         asset_name: otuscpp-0.0.${{ github.run_number }}-alpha-MacOS.zip
         asset_content_type: application/zip
 
@@ -136,6 +136,6 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-win64.zip
+        asset_path: ./otuscpp-0.0.${{github.run_number}}-win64.zip
         asset_name: otuscpp-0.0.${{ github.run_number }}-alpha-win64.zip
         asset_content_type: application/zip
