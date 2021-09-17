@@ -91,7 +91,7 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         tag_name: v${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}
-        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}} MacOS
+        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}} Darwin
         draft: true
         prerelease: false
 
@@ -102,8 +102,8 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-MacOS.zip
-        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-alpha-MacOS.zip
+        asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Darwin.zip
+        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-alpha-Darwin.zip
         asset_content_type: application/zip
 
   build-windows:
