@@ -8,7 +8,7 @@ on:
 env:
   BUILD_TYPE: Release
   VERSION_MAJOR: 0
-  VERSION_MINOR: 0
+  VERSION_MINOR: 1
   VERSION_PATCH: ${{github.run_number}}
 
 jobs:
@@ -49,7 +49,7 @@ jobs:
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
         asset_path: ./otuscpp-0.0.${{github.run_number}}-Linux.deb
-        asset_name: otuscpp-0.0.${{ github.run_number }}-alpha-Linux.deb
+        asset_name: otuscpp-0.0.${{ github.run_number }}-Linux.deb
         asset_content_type: application/vnd.debian.binary-package
 
     - name: Upload Release Asset TAR.GZ
@@ -60,7 +60,7 @@ jobs:
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
         asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Linux.tar.gz
-        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-alpha-Linux.tar.gz
+        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Linux.tar.gz
         asset_content_type: application/tar.gz
 
   build-macosx:
@@ -103,7 +103,7 @@ jobs:
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
         asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Darwin.zip
-        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-alpha-Darwin.zip
+        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Darwin.zip
         asset_content_type: application/zip
 
   build-windows:
@@ -143,5 +143,5 @@ jobs:
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
         asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-win64.zip
-        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-alpha-win64.zip
+        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-win64.zip
         asset_content_type: application/zip
