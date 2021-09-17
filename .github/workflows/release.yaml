@@ -1,0 +1,141 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - releases/**
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Conan
+      run: pip3 install conan
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_ID=${{github.run_number}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
+
+    - name: Pack
+      run: cpack --config ${{github.workspace}}/cmake-build-release/CPackConfig.cmake
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        tag_name: ${{github.run_number}}
+        release_name: Release ${{github.run_number}}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset DEB
+      id: upload-release-asset-deb
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        upload_url: ${{steps.create_release.outputs.upload_url}}
+        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-Linux.deb
+        asset_name: otuscpp-0.0.${{ github.run_number }}-Linux.deb
+        asset_content_type: application/vnd.debian.binary-package
+
+    - name: Upload Release Asset TAR.GZ
+      id: upload-release-asset-tar-gz
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        upload_url: ${{steps.create_release.outputs.upload_url}}
+        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-Linux.tar.gz
+        asset_name: otuscpp-0.0.${{ github.run_number }}-Linux.tar.gz
+        asset_content_type: application/tar.gz
+
+  build-macosx:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install conan
+      run: pip3 install conan
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_ID=${{github.run_number}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
+
+    - name: Pack
+      run: cpack --config ${{github.workspace}}/cmake-build-release/CPackConfig.cmake
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        tag_name: ${{github.run_number}}
+        release_name: Release ${{github.run_number}}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset ZIP
+      id: upload-release-asset-zip
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        upload_url: ${{steps.create_release.outputs.upload_url}}
+        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-MacOS.zip
+        asset_name: otuscpp-0.0.${{ github.run_number }}-MacOS.zip
+        asset_content_type: application/zip
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install conan
+      run: pip3 install conan
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_ID=${{github.run_number}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
+
+    - name: Pack
+      run: cpack --config ${{github.workspace}}/cmake-build-release/CPackConfig.cmake
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        tag_name: ${{github.run_number}}
+        release_name: Release ${{github.run_number}}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset ZIP
+      id: upload-release-asset-zip
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        upload_url: ${{steps.create_release.outputs.upload_url}}
+        asset_path: ${{github.workspace}}/cmake-build-release/otuscpp-0.0.${{github.run_number}}-win64.zip
+        asset_name: otuscpp-0.0.${{ github.run_number }}-win64.zip
+        asset_content_type: application/zip
