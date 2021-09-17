@@ -8,6 +8,8 @@ else()
   set(PATCH_NUM 0)
 endif()
 
+message(STATUS "PATCH_NUM=${PATCH_NUM}")
+
 project(otuscpp
   LANGUAGES CXX
   VERSION 0.0.${PATCH_NUM}
