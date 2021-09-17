@@ -37,7 +37,7 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         tag_name: v${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}
-        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}Linux
+        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}} Linux
         draft: true
         prerelease: false
 
@@ -48,8 +48,8 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ./otuscpp-0.0.${{github.run_number}}-Linux.deb
-        asset_name: otuscpp-0.0.${{ github.run_number }}-Linux.deb
+        asset_path: ./otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Linux.deb
+        asset_name: otuscpp-${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}-Linux.deb
         asset_content_type: application/vnd.debian.binary-package
 
     - name: Upload Release Asset TAR.GZ
