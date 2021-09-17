@@ -82,7 +82,7 @@ jobs:
       run: cpack --config ${{github.workspace}}/cmake-build-release/CPackConfig.cmake
 
     - name: Check dir
-      run: ls -a ${{github.workspace}}/cmake-build-release/
+      run: ls -a ${{github.workspace}}
 
     - name: Create Release
       id: create_release
