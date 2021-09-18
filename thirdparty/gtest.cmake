@@ -1,9 +1,9 @@
 message(STATUS "Checking GoogleTest V${GTEST_VERSION}")
 
-set(GTEST_DOWNLOAD_URL "https://github.com/google/googletest/archive/v${GTEST_VERSION}.zip")
+set(GTEST_DOWNLOAD_URL "https://github.com/google/googletest/archive/refs/tags/release-${GTEST_VERSION}.zip")
 set(GTEST_DOWNLOAD_PATH "${DEPENDENCIES_DIR}/files/googletest/v${GTEST_VERSION}.zip")
 set(GTEST_UNPACK_PATH "${DEPENDENCIES_DIR}/files/googletest/v${GTEST_VERSION}")
-set(GTEST_PATH "${GTEST_UNPACK_PATH}/googletest-${GTEST_VERSION}/googletest")
+set(GTEST_PATH "${GTEST_UNPACK_PATH}/googletest-release-${GTEST_VERSION}/googletest")
 
 if (NOT EXISTS "${GTEST_DOWNLOAD_PATH}")
   message(STATUS "Downloading GoogleTest V${GTEST_VERSION}")
@@ -20,8 +20,14 @@ if (NOT EXISTS ${GTEST_PATH})
     DESTINATION "${GTEST_UNPACK_PATH}")
 endif ()
 
-set(gtest_force_shared_crt ON)
+#set(gtest_force_shared_crt ON)
 
+set(GOOGLETEST_VERSION ${GTEST_VERSION})
+set(INSTALL_GTEST OFF)
 add_subdirectory(${GTEST_PATH})
 
-set_target_properties(gtest gtest_main PROPERTIES CXX_STANDARD 17)
+set_target_properties(gtest gtest_main
+  PROPERTIES
+  CXX_STANDARD 17
+  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/thirdparty/files/googletest/v${GTEST_VERSION}/googletest-release-${GTEST_VERSION}/googletest"
+)

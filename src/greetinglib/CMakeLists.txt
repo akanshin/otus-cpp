@@ -22,7 +22,7 @@ target_precompile_headers(greetinglib PRIVATE "precompiled.h")
 
 if(UNIX)
   if(NOT APPLE)
-    target_link_libraries(greetinglib PRIVATE pthread rt)
+    target_link_libraries(greetinglib pthread rt)
   endif(NOT APPLE)
 endif(UNIX)
 

@@ -3,8 +3,8 @@
 
 message(STATUS "Checking third-party dependencies...")
 
-set(DEPENDENCIES_DIR "${CMAKE_SOURCE_DIR}/dependencies")
+set(DEPENDENCIES_DIR "${CMAKE_SOURCE_DIR}/thirdparty")
 
 #--- gtest ---------------------------------------------
-set(GTEST_VERSION "1.10.x")
-include(dependencies/gtest.cmake)
+set(GTEST_VERSION "1.11.0")
+include(thirdparty/gtest.cmake)

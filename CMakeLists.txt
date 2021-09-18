@@ -16,9 +16,9 @@ project(otuscpp
 configure_file("resources/version.h.in" "version.h")
 include_directories(${CMAKE_BINARY_DIR})
 
-include(dependencies/dependencies.cmake)
+include(thirdparty/dependencies.cmake)
 
-add_subdirectory(src)
+#add_subdirectory(src)
 
 option(BUILD_TESTS "Build tests" OFF)
 

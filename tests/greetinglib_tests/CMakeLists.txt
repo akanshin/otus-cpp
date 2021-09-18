@@ -17,7 +17,7 @@ add_executable(greetinglib_tests ${GREETINGLIB_TESTS_HEADERS} ${GREETINGLIB_TEST
 
 target_precompile_headers(greetinglib_tests PRIVATE "precompiled.h")
 
-target_link_libraries(greetinglib_tests PRIVATE greetinglib gtest)
+target_link_libraries(greetinglib_tests greetinglib gtest)
 
 install(TARGETS greetinglib_tests RUNTIME DESTINATION bin)
 

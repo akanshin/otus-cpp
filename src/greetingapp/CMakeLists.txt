@@ -4,7 +4,7 @@ include_directories(
   "../greetinglib"
 )
 
-set(OTUS_APP_HEADERS
+set(GREETINGAPP_HEADERS
   "precompiled.h"
 )
 
