@@ -25,10 +25,10 @@ jobs:
       - name: Build
         run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
 
-      -name: Install Tree
+      - name: Install Tree
         run: sudo apt install tree
 
-      -name: Print Tree
+      - name: Print Tree
         run: tree ${{github.workspace}}/cmake-build-release
 
       - name: Run tests
