@@ -25,14 +25,8 @@ jobs:
       - name: Build
         run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}} --target install
 
-      - name: Install Tree
-        run: sudo apt install tree
-
-      - name: Print Tree
-        run: tree ${{github.workspace}}/cmake-build-release
-
       - name: Run tests
-        run: ctest --test-dir ${{github.workspace}}/cmake-build-release
+        run: export LD_LIBRARY_PATH="${{github.workspace}}/cmake-build-release/lib" && ctest --test-dir ${{github.workspace}}/cmake-build-release
 
   build-macosx:
     runs-on: macos-latest
@@ -47,7 +41,7 @@ jobs:
         run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}} --target install
 
       - name: Run tests
-        run: ctest --test-dir ${{github.workspace}}/cmake-build-release
+        run: export DYLD_LIBRARY_PATH="${{github.workspace}}/cmake-build-release/lib" && ctest --test-dir ${{github.workspace}}/cmake-build-release
 
   build-windows:
     runs-on: windows-latest

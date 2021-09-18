@@ -21,4 +21,4 @@ target_link_libraries(greetinglib_tests greetinglib gtest)
 
 install(TARGETS greetinglib_tests RUNTIME DESTINATION bin)
 
-gtest_discover_tests(greetinglib_tests)
+add_test(greetinglib_tests "${CMAKE_BINARY_DIR}/bin/greetinglib_tests")
