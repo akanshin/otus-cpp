@@ -13,16 +13,12 @@ project(otuscpp
   VERSION ${VERSION_NUM}
 )
 
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+
 configure_file("resources/version.h.in" "version.h")
 include_directories(${CMAKE_BINARY_DIR})
 
-include(${PROJECT_SOURCE_DIR}/thirdparty/conan.cmake)
-conan_cmake_run(
-  CONANFILE thirdparty/dependencies.txt
-  BASIC_SETUP
-  CMAKE_TARGETS
-  BUILD missing
-)
+include(thirdparty/dependencies.cmake)
 
 add_subdirectory(src)
 
@@ -30,6 +26,7 @@ option(BUILD_TESTS "Build tests" OFF)
 
 #if(BUILD_TESTS)
   enable_testing()
+  include(GoogleTest)
   add_subdirectory(tests)
 #endif()
 
@@ -48,5 +45,7 @@ set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
 
 set(CPACK_PACKAGE_CONTACT djkanshin@gmail.com)
+
+set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
 
 include(CPack)

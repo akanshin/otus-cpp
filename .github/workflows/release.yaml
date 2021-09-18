@@ -25,7 +25,7 @@ jobs:
       run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}"
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}} --target install
 
     - name: Pack
       run: cpack --config ${{github.workspace}}/cmake-build-release/CPackConfig.cmake
@@ -55,7 +55,7 @@ jobs:
       run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}"
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}} --target install
 
     - name: Pack
       run: cpack --config ${{github.workspace}}/cmake-build-release/CPackConfig.cmake
@@ -79,7 +79,7 @@ jobs:
       run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}"
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}} --target install
 
     - name: Pack
       run: cpack --config ${{github.workspace}}/cmake-build-release/CPackConfig.cmake

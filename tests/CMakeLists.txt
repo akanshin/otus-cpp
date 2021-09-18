@@ -1,1 +1,1 @@
-add_subdirectory(otuslib_tests)
+add_subdirectory(greetinglib_tests)
