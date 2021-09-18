@@ -13,6 +13,8 @@ project(otuscpp
   VERSION ${VERSION_NUM}
 )
 
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+
 configure_file("resources/version.h.in" "version.h")
 include_directories(${CMAKE_BINARY_DIR})
 
