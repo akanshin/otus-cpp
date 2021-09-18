@@ -20,10 +20,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}" --target install
+        run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}"
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
+        run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}} --target install
 
       - name: Install Tree
         run: sudo apt install tree
@@ -41,10 +41,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}" --target install
+        run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}"
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
+        run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}} --target install
 
       - name: Run tests
         run: ctest --test-dir ${{github.workspace}}/cmake-build-release
@@ -56,10 +56,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}" --target install
+        run: cmake -B ${{github.workspace}}/cmake-build-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DOTUSCPP_BUILD_VERSION="${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}"
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}}
+        run: cmake --build ${{github.workspace}}/cmake-build-release --config ${{env.BUILD_TYPE}} --target install
 
       - name: Run tests
         run: ctest --test-dir ${{github.workspace}}/cmake-build-release
