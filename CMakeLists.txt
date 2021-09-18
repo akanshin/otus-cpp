@@ -16,14 +16,6 @@ project(otuscpp
 configure_file("resources/version.h.in" "version.h")
 include_directories(${CMAKE_BINARY_DIR})
 
-include(${PROJECT_SOURCE_DIR}/thirdparty/conan.cmake)
-conan_cmake_run(
-  CONANFILE thirdparty/dependencies.txt
-  BASIC_SETUP
-  CMAKE_TARGETS
-  BUILD missing
-)
-
 add_subdirectory(src)
 
 option(BUILD_TESTS "Build tests" OFF)
