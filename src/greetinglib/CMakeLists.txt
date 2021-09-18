@@ -26,4 +26,4 @@ if(UNIX)
   endif(NOT APPLE)
 endif(UNIX)
 
-install(TARGETS greetinglib RUNTIME DESTINATION COMPONENT bin)
+install(TARGETS greetinglib RUNTIME DESTINATION bin)
