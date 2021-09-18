@@ -1,2 +1,2 @@
-add_subdirectory(otuslib)
-add_subdirectory(otusapp)
+add_subdirectory(greetinglib)
+add_subdirectory(greetingapp)
