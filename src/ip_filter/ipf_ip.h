@@ -4,9 +4,11 @@
 #include "ipf_exports.h"
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <functional>
 #include <initializer_list>
+
 
 namespace ipf
 {
@@ -14,44 +16,60 @@ namespace ipf
 class IPF_API IPv4
 {
 public:
-	IPv4(); //127.0.0.1
+    IPv4(); //127.0.0.1
+    IPv4(const char *);         // "x.x.x.x" or "localhost"
+    IPv4(const wchar_t *);      // L"x.x.x.x" or L"localhost"
 	IPv4(const std::string &);  // "x.x.x.x" or "localhost"
-	IPv4(const char *);         // "x.x.x.x" or "localhost"
 	IPv4(const std::wstring &); // L"x.x.x.x" or L"localhost"
-	IPv4(const wchar_t *);      // L"x.x.x.x" or L"localhost"
-	IPv4(std::uint8_t, std::uint8_t, std::uint8_t, std::uint8_t);
-	typename<typename T>
-	IPv4(std::initializer_list<T> l)
-	{
-		static_assert(std::is_integral_v<T> && !std::is_same_v<T, bool>, "Only integral types (except bool) are supported!");
-		static_assert(l.size() == 4, "IPv4 have 4 bytes!");
-		std::array<T, 4> a = l;
-		init(static_cast<std::uint8_t>(a[0]), static_cast<std::uint8_t>(a[1]),
-			 static_cast<std::uint8_t>(a[2]), static_cast<std::uint8_t>(a[3]));
-	}
+	IPv4(std::byte, std::byte, std::byte, std::byte);
+	IPv4(int, int, int, int);
+
+	IPv4(const IPv4 &) = default;
+	IPv4(IPv4 &&) = default;
+	IPv4 & operator=(const IPv4 &) = default;
+	IPv4 & operator=(IPv4 &&) = default;
 
 	std::string toString() const;
 	std::wstring toWString() const;
 
-	std::uint8_t operator[](std::size_t) const;
-	std::uint8_t & operator[](std::size_t);
+	std::byte operator[](std::size_t) const;
+	std::byte & operator[](std::size_t);
 
 	bool operator<(const IPv4 & other) const;
 	bool operator==(const IPv4 & other) const;
 
+	auto begin() const noexcept { return m_aData.begin(); }
+	auto end() const noexcept { return m_aData.end(); }
+	auto cbegin() const noexcept { return m_aData.cbegin(); }
+	auto cend() const noexcept { return m_aData.cend(); }
+
 private:
-	std::array<std::uint8_t, 4> m_aData;
-}
+	std::array<std::byte, 4> m_aData;
+};
 
 } // namespace ipf
 
 namespace std
 {
 
+inline auto begin(ipf::IPv4 & ip) noexcept { return ip.begin(); }
+inline auto end(ipf::IPv4 & ip) noexcept { return ip.end(); }
+inline auto cbegin(ipf::IPv4 & ip) noexcept { return ip.cbegin(); }
+inline auto cend(ipf::IPv4 & ip) noexcept { return ip.cend(); }
+
 template<>
 struct IPF_API hash<ipf::IPv4>
 {
-	std::size_t operator()(IPv4 const &) const noexcept;
+	std::size_t operator()(ipf::IPv4 const & ip) const noexcept
+	{
+		std::uint32_t d = 0;
+		for (const auto & b : ip)
+		{
+			d <<= 8;
+			d |= std::to_integer<int>(b);
+		}
+		return std::hash<std::uint32_t>()(d);
+	}
 };
 
 } //namespace std
