@@ -7,8 +7,8 @@ on:
 
 env:
   BUILD_TYPE: Release
-  VERSION_MAJOR: 0
-  VERSION_MINOR: 1
+  VERSION_MAJOR: 1
+  VERSION_MINOR: 0
   VERSION_PATCH: ${{github.run_number}}
 
 jobs:
@@ -100,8 +100,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
-        tag_name: v${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}
-        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}
+        tag_name: v${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}-ip-filter
+        release_name: Release ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}} (ip_filter)
         draft: true
         prerelease: false
 
