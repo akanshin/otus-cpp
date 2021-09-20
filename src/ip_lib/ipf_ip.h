@@ -1,10 +1,9 @@
-#ifndef OTUS_CPP_IP_FILTER_IP_H
-#define OTUS_CPP_IP_FILTER_IP_H
+#ifndef OTUS_CPP_IP_LIB_IP_H
+#define OTUS_CPP_IP_LIB_IP_H
 
 #include "ipf_exports.h"
 
 #include <array>
-#include <cstddef>
 #include <cstdint>
 #include <functional>
 #include <initializer_list>
@@ -16,12 +15,14 @@ namespace ipf
 class IPF_API IPv4
 {
 public:
-    IPv4(); //127.0.0.1
+	using byte = std::uint8_t;
+	
+	IPv4(); //127.0.0.1
     IPv4(const char *);         // "x.x.x.x" or "localhost"
     IPv4(const wchar_t *);      // L"x.x.x.x" or L"localhost"
 	IPv4(const std::string &);  // "x.x.x.x" or "localhost"
 	IPv4(const std::wstring &); // L"x.x.x.x" or L"localhost"
-	IPv4(std::byte, std::byte, std::byte, std::byte);
+	IPv4(byte, byte, byte, byte);
 	IPv4(int, int, int, int);
 
 	IPv4(const IPv4 &) = default;
@@ -32,8 +33,8 @@ public:
 	std::string toString() const;
 	std::wstring toWString() const;
 
-	std::byte operator[](std::size_t) const;
-	std::byte & operator[](std::size_t);
+	byte operator[](std::size_t) const;
+	byte & operator[](std::size_t);
 
 	bool operator<(const IPv4 & other) const;
 	bool operator==(const IPv4 & other) const;
@@ -44,7 +45,7 @@ public:
 	auto cend() const noexcept { return m_aData.cend(); }
 
 private:
-	std::array<std::byte, 4> m_aData;
+	std::array<byte, 4> m_aData;
 };
 
 } // namespace ipf
@@ -66,7 +67,7 @@ struct IPF_API hash<ipf::IPv4>
 		for (const auto & b : ip)
 		{
 			d <<= 8;
-			d |= std::to_integer<int>(b);
+			d |= static_cast<int>(b);
 		}
 		return std::hash<std::uint32_t>()(d);
 	}
@@ -74,4 +75,4 @@ struct IPF_API hash<ipf::IPv4>
 
 } //namespace std
 
-#endif //OTUS_CPP_IP_FILTER_IP_H
+#endif //OTUS_CPP_IP_LIB_IP_H

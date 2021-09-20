@@ -6,7 +6,7 @@ namespace ipf
 
 static const std::string s_slocalhost{ "localhost" };
 static const std::wstring s_wslocalhost{ L"localhost" };
-static const std::array<std::byte, 4> s_localhost{ std::byte(127), std::byte(0), std::byte(0), std::byte(1) };
+static const std::array<IPv4::byte, 4> s_localhost{ IPv4::byte(127), IPv4::byte(0), IPv4::byte(0), IPv4::byte(1) };
 
 static const std::regex s_regex{ "^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\."
                                  "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\."
@@ -32,12 +32,12 @@ IPv4::IPv4(const char * pStr)
         throw std::invalid_argument("IPv4: wrong format.");
 
     std::stringstream ss{ pStr };
-    std::string byteStr;
+    std::string uint8_tStr;
     std::size_t idx = 0;
-    while (std::getline(ss, byteStr, '.'))
+    while (std::getline(ss, uint8_tStr, '.'))
     {
-        int a = std::stoi(byteStr);
-        m_aData[idx++] = std::byte(a);
+        int a = std::stoi(uint8_tStr);
+        m_aData[idx++] = byte(a);
     }
 }
 
@@ -51,12 +51,12 @@ IPv4::IPv4(const wchar_t * pStr)
         throw std::invalid_argument("IPv4: wrong format.");
 
     std::wstringstream ss{ pStr };
-    std::wstring byteStr;
+    std::wstring uint8_tStr;
     std::size_t idx = 0;
-    while (std::getline(ss, byteStr, L'.'))
+    while (std::getline(ss, uint8_tStr, L'.'))
     {
-        int a = std::stoi(byteStr);
-        m_aData[idx++] = std::byte(a);
+        int a = std::stoi(uint8_tStr);
+        m_aData[idx++] = byte(a);
     }
 }
 
@@ -68,12 +68,12 @@ IPv4::IPv4(const std::wstring & str)
     : IPv4(str.c_str())
 {}
 
-IPv4::IPv4(std::byte b1, std::byte b2, std::byte b3, std::byte b4)
+IPv4::IPv4(byte b1, byte b2, byte b3, byte b4)
     : m_aData{ b1, b2, b3, b4}
 {}
 
 IPv4::IPv4(int b1, int b2, int b3, int b4)
-    : m_aData{ std::byte(b1), std::byte(b2), std::byte(b3), std::byte(b4) }
+    : m_aData{ byte(b1), byte(b2), byte(b3), byte(b4) }
 {}
 
 std::string IPv4::toString() const
@@ -83,7 +83,7 @@ std::string IPv4::toString() const
     {
         if (i > 0)
             oss << ".";
-        oss << std::to_integer<int>(m_aData[i]);
+        oss << static_cast<int>(m_aData[i]);
     }
     return oss.str();
 }
@@ -95,19 +95,19 @@ std::wstring IPv4::toWString() const
     {
         if (i > 0)
             oss << L".";
-        oss << std::to_integer<int>(m_aData[i]);
+        oss << static_cast<int>(m_aData[i]);
     }
     return oss.str();
 }
 
-std::byte IPv4::operator[](std::size_t idx) const
+IPv4::byte IPv4::operator[](std::size_t idx) const
 {
     if (idx > 3)
         throw std::invalid_argument("IPv4: out of range");
     return m_aData[idx];
 }
 
-std::byte & IPv4::operator[](std::size_t idx)
+IPv4::byte & IPv4::operator[](std::size_t idx)
 {
     if (idx > 3)
         throw std::invalid_argument("IPv4: out of range");
