@@ -1,1 +1,2 @@
 add_subdirectory(greetinglib_tests)
+add_subdirectory(ip_lib_tests)
