@@ -3,11 +3,11 @@
 
 TEST(IPv4Test, default_constructor)
 {
-	ipf::IPv4 def;
-	ASSERT_EQ(ipf::IPv4::byte(127), def[0]);
-	ASSERT_EQ(ipf::IPv4::byte(0), def[1]);
-	ASSERT_EQ(ipf::IPv4::byte(0), def[2]);
-	ASSERT_EQ(ipf::IPv4::byte(1), def[3]);
+    ipf::IPv4 def;
+    ASSERT_EQ(ipf::IPv4::byte(127), def[0]);
+    ASSERT_EQ(ipf::IPv4::byte(0), def[1]);
+    ASSERT_EQ(ipf::IPv4::byte(0), def[2]);
+    ASSERT_EQ(ipf::IPv4::byte(1), def[3]);
 }
 
 TEST(IPv4Test, constructor_const_char_ptr)

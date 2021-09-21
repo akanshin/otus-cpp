@@ -15,37 +15,37 @@ namespace ipf
 class IPF_API IPv4
 {
 public:
-	using byte = std::uint8_t;
-	
-	IPv4(); //127.0.0.1
+    using byte = std::uint8_t;
+    
+    IPv4(); //127.0.0.1
     IPv4(const char *);         // "x.x.x.x" or "localhost"
     IPv4(const wchar_t *);      // L"x.x.x.x" or L"localhost"
-	IPv4(const std::string &);  // "x.x.x.x" or "localhost"
-	IPv4(const std::wstring &); // L"x.x.x.x" or L"localhost"
-	IPv4(byte, byte, byte, byte);
-	IPv4(int, int, int, int);
+    IPv4(const std::string &);  // "x.x.x.x" or "localhost"
+    IPv4(const std::wstring &); // L"x.x.x.x" or L"localhost"
+    IPv4(byte, byte, byte, byte);
+    IPv4(int, int, int, int);
 
-	IPv4(const IPv4 &) = default;
-	IPv4(IPv4 &&) = default;
-	IPv4 & operator=(const IPv4 &) = default;
-	IPv4 & operator=(IPv4 &&) = default;
+    IPv4(const IPv4 &) = default;
+    IPv4(IPv4 &&) = default;
+    IPv4 & operator=(const IPv4 &) = default;
+    IPv4 & operator=(IPv4 &&) = default;
 
-	std::string toString() const;
-	std::wstring toWString() const;
+    std::string toString() const;
+    std::wstring toWString() const;
 
-	byte operator[](std::size_t) const;
-	byte & operator[](std::size_t);
+    byte operator[](std::size_t) const;
+    byte & operator[](std::size_t);
 
-	bool operator<(const IPv4 & other) const;
-	bool operator==(const IPv4 & other) const;
+    bool operator<(const IPv4 & other) const;
+    bool operator==(const IPv4 & other) const;
 
-	auto begin() const noexcept { return m_aData.begin(); }
-	auto end() const noexcept { return m_aData.end(); }
-	auto cbegin() const noexcept { return m_aData.cbegin(); }
-	auto cend() const noexcept { return m_aData.cend(); }
+    auto begin() const noexcept { return m_aData.begin(); }
+    auto end() const noexcept { return m_aData.end(); }
+    auto cbegin() const noexcept { return m_aData.cbegin(); }
+    auto cend() const noexcept { return m_aData.cend(); }
 
 private:
-	std::array<byte, 4> m_aData;
+    std::array<byte, 4> m_aData;
 };
 
 } // namespace ipf
@@ -61,16 +61,16 @@ inline auto cend(ipf::IPv4 & ip) noexcept { return ip.cend(); }
 template<>
 struct IPF_API hash<ipf::IPv4>
 {
-	std::size_t operator()(ipf::IPv4 const & ip) const noexcept
-	{
-		std::uint32_t d = 0;
-		for (const auto & b : ip)
-		{
-			d <<= 8;
-			d |= static_cast<int>(b);
-		}
-		return std::hash<std::uint32_t>()(d);
-	}
+    std::size_t operator()(ipf::IPv4 const & ip) const noexcept
+    {
+        std::uint32_t d = 0;
+        for (const auto & b : ip)
+        {
+            d <<= 8;
+            d |= static_cast<int>(b);
+        }
+        return std::hash<std::uint32_t>()(d);
+    }
 };
 
 } //namespace std
